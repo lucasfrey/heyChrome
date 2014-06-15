@@ -1,14 +1,20 @@
-// React when a browser action's icon is clicked.
-chrome.browserAction.onClicked.addListener(function(tab) {
-	chrome.tabs.query({
-	    active: true,               // Select active tabs
-	    lastFocusedWindow: true     // In the current window
-	}, function(array_of_Tabs) {
-	    // Since there can only be one active tab in one active window, 
-	    //  the array has only one element
-	    var tab = array_of_Tabs[0];
-	    // Example:
-	    var url = tab.url;
-	    chrome.tabs.update({url: url+"/dev/build"});
-	}); 
+chrome.tabs.getSelected(null, function(tab) {
+        tabUrl = tab.url;
 });
+
+document.getElementById("flushOne").addEventListener("click", flushOne, false);
+document.getElementById("flushAll").addEventListener("click", flushAll, false);
+document.getElementById("devBuild").addEventListener("click", devBuild, false);
+
+function flushOne() {
+   chrome.tabs.update({url:tabUrl+'?flush=1'});  
+}
+
+function flushAll() {
+   chrome.tabs.update({url:tabUrl+'?flush=all'});  
+}
+
+function devBuild() {
+   chrome.tabs.update({url:tabUrl+'/dev/build'});  
+}
+  
